@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export async function orderAction(status: string) {
   if(!status) {
-    throw new Error("No status");
+    return redirect("/example/orders/unathorized");
   }
 
   if (status.toLowerCase() == "active") {
