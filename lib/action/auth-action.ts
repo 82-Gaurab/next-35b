@@ -1,0 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// note: server side processing
+
+"use server";
+
+import { register } from "../api/auth";
+
+export const handleRegister = async (formData: any) => {
+  try {
+    // info: how data sent from component to backend api
+    const res = await register(formData);
+    // component return logic
+    if(res.success) {
+      return {
+        success: true,
+        data: res.data,
+        message: "Registration successful"
+      };
+    }
+    return {success: false, message: res.message || "Registration failed"};
+  } catch (error: Error | any ) {
+    return {success: false, message: error.message || "Registration failed"};
+  }
+}
