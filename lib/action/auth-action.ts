@@ -3,7 +3,7 @@
 
 "use server";
 
-import { register } from "../api/auth";
+import { register, login } from "../api/auth";
 
 export const handleRegister = async (formData: any) => {
   try {
@@ -20,5 +20,23 @@ export const handleRegister = async (formData: any) => {
     return {success: false, message: res.message || "Registration failed"};
   } catch (error: Error | any ) {
     return {success: false, message: error.message || "Registration failed"};
+  }
+}
+
+export const handleLogin = async (formData: any) => {
+  try {
+    // info: how data sent from component to backend api
+    const res = await login(formData);
+    // component return logic
+    if(res.success) {
+      return {
+        success: true,
+        data: res.data,
+        message: "Login successful"
+      };
+    }
+    return {success: false, message: res.message || "Login failed"};
+  } catch (error: Error | any ) {
+    return {success: false, message: error.message || "Login failed"};
   }
 }

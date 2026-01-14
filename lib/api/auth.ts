@@ -16,3 +16,17 @@ export const register = async(registerData: any) => {
     )
   }
 }
+
+export const login = async(registerData: any) => {
+  try {
+    const response = await axios.post(API.AUTH.LOGIN, registerData);
+    return response.data; // response ko body (what backend returns)
+  } catch (error: Error | any) {
+    // info: if 4xx/5xx error, axios throws error
+    throw new Error(
+      error.response?.data?.message // backend error message
+      || error.message // general axios error message
+      || "Login Failed" // fallback message
+    )
+  }
+}
