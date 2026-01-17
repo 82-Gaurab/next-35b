@@ -1,15 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import RegisterForm from "../_components/register-form";
-
-// export default function Page() {
-//   return (
-//     <div>
-//       Register Page
-//       <RegisterForm />
-//     </div>
-//   );
-// }
-
 "use client";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -21,12 +11,12 @@ import { handleRegister } from "@/lib/action/auth-action";
 
 export const registerSchema = z.object(
     {
-        email: z.email({ message: "Email milena" }),
-        username: z.string().min(3, { message: "Username pugena" }),
         firstName: z.string().min(1, { message: "First Name pugena" }),
         lastName: z.string().min(1, { message: "Last Name pugena" }),
+        email: z.email({ message: "Email milena" }),
+        username: z.string().min(3, { message: "Username pugena" }),
+        password: z.string().min(6, { message: "Password pugena" }),
         confirmPassword: z.string().min(6, { message: "Confirm Password pugena" }),
-        password: z.string().min(6, { message: "Password pugena" })
     }
 ).refine((data) => data.password === data.confirmPassword,
     {
@@ -45,27 +35,33 @@ export default function Page() {
                 resolver: zodResolver(registerSchema),
             }
         )
-        const [error, setError] = useState("");
+    
+    const [error, setError] = useState("");
     const onSubmit = async (data: RegisterForm) => {
-        // info: call action here
+        // call action here
         setError("");
-        try {
-          const res = await handleRegister(data);
-          if(!res.success) {
-            throw new Error(res.message || "Registration failed");
-          }
-          // handle redirect (option)
-          setTransition(() => {
-            router.push("/login");
-          });
-        } catch (error : Error | any) {
-          setError(error.message || "Registration failed");
+        console.log(data);
+        try{
+            const res = await handleRegister(data);
+            console.log("Page ko try");
+            console.log(res);
+            if(!res.success){
+                throw new Error(res.message || "Registration failed");
+            }
+            // handle redirect (optional)
+            setTransition(() => {
+                router.push("/login");
+            });
+        }catch(err:Error | any){
+    console.log("Page ko error bitra aayo");
+
+            setError(err.message || "Registration failed");
         }
     }
     
-
     return (
         <div>
+            { error && <div className="text-red-500">{error}</div> }
             <form onSubmit={handleSubmit(onSubmit)}
                 className="mx-auto p-2 max-w-xl border">
                 <div className="mt-2">

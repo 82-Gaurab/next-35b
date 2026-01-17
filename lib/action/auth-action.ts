@@ -7,6 +7,8 @@ import { register, login } from "../api/auth";
 
 export const handleRegister = async (formData: any) => {
   try {
+    console.log("Auth Action bitra aayo");
+    console.log(formData);
     // info: how data sent from component to backend api
     const res = await register(formData);
     // component return logic
@@ -19,6 +21,8 @@ export const handleRegister = async (formData: any) => {
     }
     return {success: false, message: res.message || "Registration failed"};
   } catch (error: Error | any ) {
+    console.log("Auth action ko error bitra aayo");
+
     return {success: false, message: error.message || "Registration failed"};
   }
 }
